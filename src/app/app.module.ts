@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ArcgisModule } from './modules/arcgis/arcgis.module';
+import { RoutingModule } from './modules/routing/routing.module';
 
 import { AppComponent } from './app.component';
 
@@ -8,7 +10,9 @@ import { AppComponent } from './app.component';
     AppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    ArcgisModule,
+    RoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
