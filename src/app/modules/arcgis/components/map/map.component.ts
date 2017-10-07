@@ -8,20 +8,24 @@ import { EsriLoaderService } from '../../services/esri-loader.service';
 })
 export class MapComponent implements OnInit {
 
-  map: __esri.Map;
-  mapView: __esri.MapView;
+  private map: __esri.Map;
+  private mapView: __esri.MapView;
+
+  private Draw: __esri.DrawConstructor;
 
   @ViewChild('mapNode') private mapViewEl: ElementRef;
 
   constructor(private esriLoaderSvc: EsriLoaderService) {}
 
   async ngOnInit() {
-    const [Map, MapView]: [__esri.MapConstructor, __esri.MapViewConstructor] =
-      await this.esriLoaderSvc.require('esri/Map', 'esri/views/MapView');
+    const [Map, MapView, Draw]: [__esri.MapConstructor, __esri.MapViewConstructor, __esri.DrawConstructor] =
+      await this.esriLoaderSvc.require('esri/Map', 'esri/views/MapView', 'esri/views/2d/draw/Draw');
 
-      const mapProperties = {
-        basemap: 'hybrid'
-      };
+    this.Draw = Draw;
+
+    const mapProperties = {
+      basemap: 'hybrid'
+    };
 
     this.map = new Map(<__esri.MapProperties>mapProperties);
 
@@ -30,5 +34,4 @@ export class MapComponent implements OnInit {
       container: this.mapViewEl.nativeElement
     });
   }
-
 }
