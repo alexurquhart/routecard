@@ -1,14 +1,18 @@
-.container
+.app-container
     width: 100%
-    height: calc(100% - 64px)
+    height: 100%
     display: flex
+    flex-direction: column
+    align-content: stretch
+
+.container
+    display: flex
+    flex-grow: 2
     justify-content: space-between
 
 .sidebar
-    height: 100%
     width: 50%
     max-width: 600px
 
 .map
-    height: 100%
     flex-grow: 2
