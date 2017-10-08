@@ -1,6 +1,6 @@
 <div class="app-container">
   <!-- <app-navbar></app-navbar> -->
-  <div>{{ point | mgrs: 8 }}</div>
+  <div>{{ point | coordinate: {format: 'dd', decimals: 2} }}</div>
   <div class="container">
     <div class="map">
       <app-map (mouseMove)="mouseMove($event)"></app-map>
