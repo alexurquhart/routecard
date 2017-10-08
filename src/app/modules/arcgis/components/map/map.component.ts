@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, ElementRef, ViewChild, EventEmitter } from '@angular/core';
 import { EsriLoaderService } from '../../services/esri-loader.service';
 
 @Component({
@@ -13,6 +13,8 @@ export class MapComponent implements OnInit {
 
   private Draw: __esri.DrawConstructor;
 
+  @Output() mouseMove = new EventEmitter<__esri.Point>();
+
   @ViewChild('mapNode') private mapViewEl: ElementRef;
 
   constructor(private esriLoaderSvc: EsriLoaderService) {}
@@ -24,7 +26,7 @@ export class MapComponent implements OnInit {
     this.Draw = Draw;
 
     const mapProperties = {
-      basemap: 'hybrid'
+      basemap: 'streets-night-vector'
     };
 
     this.map = new Map(<__esri.MapProperties>mapProperties);
@@ -32,6 +34,19 @@ export class MapComponent implements OnInit {
     this.mapView = new MapView({
       map: this.map,
       container: this.mapViewEl.nativeElement
+    });
+
+    this.wireEvents();
+  }
+
+  private wireEvents() {
+    this.mapView.on('pointer-move', (evt) => {
+      const point = this.mapView.toMap({
+        x: evt.x,
+        y: evt.y
+      });
+
+      this.mouseMove.emit(point);
     });
   }
 }
