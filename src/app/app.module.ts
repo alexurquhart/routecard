@@ -10,7 +10,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { RoutesListComponent } from './components/routes-list/routes-list.component';
-import { MGRSPipe } from './pipes/mgrs.pipe';
+import { CoordinatePipe } from './pipes/coordinate.pipe';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,7 @@ import { MGRSPipe } from './pipes/mgrs.pipe';
     SidebarComponent,
     FooterComponent,
     RoutesListComponent,
-    MGRSPipe
+    CoordinatePipe
   ],
   imports: [
     BrowserModule,
