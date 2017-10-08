@@ -24,7 +24,7 @@ export class MapComponent implements OnInit {
     this.Draw = Draw;
 
     const mapProperties = {
-      basemap: 'hybrid'
+      basemap: 'streets-night-vector'
     };
 
     this.map = new Map(<__esri.MapProperties>mapProperties);
