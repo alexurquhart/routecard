@@ -12,15 +12,18 @@ export class MGRSPipe implements PipeTransform {
     // Convert to an accuracy figure
     const accuracy = figures / 2;
 
+    // Convert to an MGRS grid string
     const conversion = mgrs.forward([value.longitude, value.latitude], accuracy);
 
+    // Convert the string to it's parts
     const regexp = /(\d+\w)(\w{2})(\d+)/;
     const [na, designator, identifier, coordinate] = regexp.exec(conversion);
 
+    // Extract eastings and northings
     const eastings = coordinate.slice(0, coordinate.length / 2);
     const northings = coordinate.slice((coordinate.length / 2));
 
-    // Return the MGRS string
+    // Return the formatted MGRS string
     return `${designator} ${identifier} ${eastings} ${northings}`;
   }
 
