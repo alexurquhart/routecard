@@ -9,8 +9,9 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { RoutesListComponent } from './components/routes-list/routes-list.component';
+import { RoutesListComponent } from './pages/routes-list/routes-list.component';
 import { CoordinatePipe } from './pipes/coordinate.pipe';
+import { AddRouteComponent } from './pages/add-route/add-route.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { CoordinatePipe } from './pipes/coordinate.pipe';
     SidebarComponent,
     FooterComponent,
     RoutesListComponent,
-    CoordinatePipe
+    CoordinatePipe,
+    AddRouteComponent
   ],
   imports: [
     BrowserModule,
