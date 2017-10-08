@@ -1,8 +1,9 @@
 <div class="app-container">
-  <app-navbar></app-navbar>
+  <!-- <app-navbar></app-navbar> -->
+  <div>{{ point | mgrs: 8 }}</div>
   <div class="container">
     <div class="map">
-      <app-map></app-map>
+      <app-map (mouseMove)="mouseMove($event)"></app-map>
     </div>
     <div class="sidebar">
       <app-sidebar></app-sidebar>

@@ -10,6 +10,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { RoutesListComponent } from './components/routes-list/routes-list.component';
+import { MGRSPipe } from './pipes/mgrs.pipe';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { RoutesListComponent } from './components/routes-list/routes-list.compon
     NavbarComponent,
     SidebarComponent,
     FooterComponent,
-    RoutesListComponent
+    RoutesListComponent,
+    MGRSPipe
   ],
   imports: [
     BrowserModule,
