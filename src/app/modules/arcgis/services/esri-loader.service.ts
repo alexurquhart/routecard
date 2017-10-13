@@ -6,6 +6,22 @@ export class EsriLoaderService {
   private apiUrl = 'https://js.arcgis.com/4.5/';
   private cssUrl = 'https://js.arcgis.com/4.5/esri/css/main.css';
 
+  // Bootstrap the API
+  public bootstrap(jsUrl: string, cssUrl: string) {
+    // Check and see if already bootstrapped
+    if (this.cssBootstrapped() || this.jsBootstrapped()) {
+      throw new Error('Esri Loader Service Error: Bootstrapping process already started');
+    }
+
+    // Now all subsequent calls to require() will use the specified URL's
+    this.apiUrl = jsUrl;
+    this.cssUrl = cssUrl;
+
+    // Load
+    this.loadCss();
+    this.loadJs();
+  }
+
   public require(...modules: string[]): Promise<any> {
     return new Promise((resolve, reject) => {
       Promise.all([this.loadJs(), this.loadCss()]).then((results: any[]) => {
@@ -30,9 +46,18 @@ export class EsriLoaderService {
       const newCss = document.createElement('link');
       newCss.rel = 'stylesheet';
       newCss.href = this.cssUrl;
+      newCss.dataset.esriLoaderService = 'true';
       newCss.addEventListener('load', () => resolve());
       document.head.appendChild(newCss);
     });
+  }
+
+  private cssBootstrapped(): boolean {
+    return document.querySelector('link[data-esr-loader-service="true"]') !== null;
+  }
+
+  private jsBootstrapped(): boolean {
+    return document.querySelector('link[data-esr-loader-service="true"]') !== null;
   }
 
   private loadJs(): Promise<Function> {
@@ -55,6 +80,7 @@ export class EsriLoaderService {
 
       const newScript = document.createElement('script');
       newScript.type = 'text/javascript';
+      newScript.dataset.esriLoaderService = 'true';
       newScript.src = this.apiUrl;
       newScript.addEventListener('load', onLoad);
 

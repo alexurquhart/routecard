@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, ElementRef, ViewChild, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, ElementRef, ViewChild, EventEmitter, OnDestroy } from '@angular/core';
 import { EsriLoaderService } from '../../services/esri-loader.service';
 
 @Component({
@@ -6,24 +6,33 @@ import { EsriLoaderService } from '../../services/esri-loader.service';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.sass']
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnDestroy {
 
   private map: __esri.Map;
   private mapView: __esri.MapView;
 
-  private Draw: __esri.DrawConstructor;
-
   @Output() mouseMove = new EventEmitter<__esri.Point>();
 
+  @Input()
+  set center(newCenter: __esri.Point) {
+    console.log(newCenter)
+    if (this.mapView) {
+      this.mapView.set('center', newCenter);
+    }
+  }
+
+  @Output() centerChange = new EventEmitter<__esri.Point>();
+
   @ViewChild('mapNode') private mapViewEl: ElementRef;
+
+  private watchHandles: __esri.WatchHandle[] = [];
 
   constructor(private esriLoaderSvc: EsriLoaderService) {}
 
   async ngOnInit() {
-    const [Map, MapView, Draw]: [__esri.MapConstructor, __esri.MapViewConstructor, __esri.DrawConstructor] =
-      await this.esriLoaderSvc.require('esri/Map', 'esri/views/MapView', 'esri/views/2d/draw/Draw');
-
-    this.Draw = Draw;
+    // Load modules
+    const [Map, MapView]: [__esri.MapConstructor, __esri.MapViewConstructor] =
+      await this.esriLoaderSvc.require('esri/Map', 'esri/views/MapView');
 
     const mapProperties = {
       basemap: 'streets-night-vector'
@@ -39,6 +48,12 @@ export class MapComponent implements OnInit {
     this.wireEvents();
   }
 
+  ngOnDestroy() {
+    this.watchHandles.forEach(handle => {
+      handle.remove();
+    });
+  }
+
   private wireEvents() {
     this.mapView.on('pointer-move', (evt) => {
       const point = this.mapView.toMap({
@@ -48,5 +63,11 @@ export class MapComponent implements OnInit {
 
       this.mouseMove.emit(point);
     });
+
+    const centerHandle = this.mapView.watch('center', (newCenter: __esri.Point) => {
+      this.centerChange.emit(newCenter);
+    });
+
+    this.watchHandles.push(centerHandle);
   }
 }
